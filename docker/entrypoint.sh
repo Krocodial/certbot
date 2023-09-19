@@ -164,14 +164,10 @@ routeMap=$(oc get route -l certbot-managed=true -o=jsonpath='{range .items[*]}{.
 # - The host name will also be used as the certificate name in the case individual certificates are being requested.
 declare -A managedRoutes
 for item in ${routeMap}; do
-  # Filter out platform routes
-  if [[ "${item}" != *apps.silver.devops.gov.bc.ca* ]]; then
-    # Use the route's name as the key
-    # and the host name as the value
-    key=${item%%=*}
-    value=${item#*=}
-    managedRoutes[${key}]=${value}
-  fi
+  key=${item%%=*}
+  value=${item#*=}
+  managedRoutes[${key}]=${value}
+  
 done
 
 # Generate a list of sorted and unique managed domains (hosts), and a list of sorted and unique routes
